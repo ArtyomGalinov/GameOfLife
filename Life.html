@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<body>
+<canvas id="myCanvas" width="400" height="400" style="border:1px  solid #c3c3c3;">
+Your brouser does not support the canvas element.
+</canvas>
+<input type='button' onclick='setInterval(doStep, 500)' value='next step'>
+<script>
+let fieldSize = 10;
+let cellSize = 40;
+var canvas = document.getElementById("myCanvas");
+var ctx = canvas.getContext("2d");
+ctx.fillStyle = "#FF0000";
+
+let prevField = new Array(fieldSize);
+let field = new Array(fieldSize);
+
+for (let i = 0; i < fieldSize; i++) {
+	field[i] = new Array(fieldSize);
+	prevField[i] = new Array(fieldSize);
+	}
+
+for (let i = 0; i < fieldSize; i++)
+	for (let j = 0; j < fieldSize; j++) {
+		if (Math.random() > 0.5) {
+			field[i][j] = 0;
+			ctx.fillStyle = "#FFFFFf";
+			ctx.fillRect(i * cellSize, j * cellSize, cellSize, cellSize);
+			} 
+			
+		else {
+			field[i][j] = 1;
+			ctx.fillStyle = "#FF0000";
+			ctx.fillRect(i * cellSize, j * cellSize, cellSize, cellSize);
+			}
+	}
+
+function neighbours(x, y) {
+	let neighboursCount = -prevField[x][y];
+	for (let i = -1; i <= 1; i++)
+		for (let j = -1; j <= 1; j++) {
+			neighboursCount += prevField[(fieldSize + i + x) % fieldSize][(fieldSize + j + y) % fieldSize];}
+		return neighboursCount;
+		}
+
+
+function doStep() {
+	for (let i = 0; i < fieldSize; i++)
+		for (let j = 0; j < fieldSize; j++) {
+			prevField[i][j] = field[i][j];}
+		
+	for (let i = 0; i < fieldSize; i++)
+		for (let j = 0; j < fieldSize; j++) {
+
+			if (neighbours(i, j) == 3 && prevField[i][j] == 0) {
+				field[i][j] = 1;
+				ctx.fillStyle = "#FF0000";
+				ctx.fillRect(i * cellSize, j * cellSize, cellSize, cellSize);} 
+				
+			else if (neighbours(i, j) <= 3 && neighbours(i, j) >= 2 && prevField[i][j] == 1) {
+				field[i][j] = 1;
+				ctx.fillStyle = "#FF0000";
+				ctx.fillRect(i * cellSize, j * cellSize, cellSize, cellSize);}
+				
+			else {
+				field[i][j] = 0;
+				ctx.fillStyle = "#FFFFFF";
+				ctx.fillRect(i * cellSize, j * cellSize, cellSize, cellSize);}
+        }
+}
+</script>
+</body>
+</html>
