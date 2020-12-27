@@ -36,10 +36,10 @@ for (let i = 0; i < fieldSize; i++)
 	}
 
 function neighbours(x, y) {
-	let neighboursCount = -prevField[x][y];
-	for (let i = -1; i <= 1; i++)
-		for (let j = -1; j <= 1; j++) {
-			neighboursCount += prevField[(fieldSize + i + x) % fieldSize][(fieldSize + j + y) % fieldSize];}
+	let neighboursCount = 0;
+	for (let i = x - 1; i <= x + 1; i++)
+		for (let j = y - 1; j <= y + 1; j++) {
+			neighboursCount += prevField[(i + fieldSize) % fieldSize][(j + fieldSize) % fieldSize];}
 		return neighboursCount;
 		}
 
